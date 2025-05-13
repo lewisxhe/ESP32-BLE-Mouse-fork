@@ -60,7 +60,7 @@ static const uint8_t _hidReportDescriptor[] = {
   END_COLLECTION(0)          // END_COLLECTION
 };
 
-BleMouse::BleMouse(std::string deviceName, std::string deviceManufacturer, uint8_t batteryLevel) : 
+BleMouse::BleMouse(StringType deviceName, StringType deviceManufacturer, uint8_t batteryLevel) : 
     _buttons(0),
     hid(0)
 {

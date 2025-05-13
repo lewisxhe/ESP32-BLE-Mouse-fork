@@ -14,6 +14,15 @@
 #define MOUSE_FORWARD 16
 #define MOUSE_ALL (MOUSE_LEFT | MOUSE_RIGHT | MOUSE_MIDDLE) # For compatibility with the Mouse library
 
+#include "esp_arduino_version.h"
+#if ESP_ARDUINO_VERSION > ESP_ARDUINO_VERSION_VAL(3,0,0) && !defined(USE_NIMBLE)
+#define StringType   String
+#define SubString    substring
+#else
+#define StringType   std::string
+#define SubString    substr
+#endif
+
 class BleMouse {
 private:
   uint8_t _buttons;
@@ -24,7 +33,7 @@ private:
   void rawAction(uint8_t msg[], char msgSize);
   static void taskServer(void* pvParameter);
 public:
-  BleMouse(std::string deviceName = "ESP32 Bluetooth Mouse", std::string deviceManufacturer = "Espressif", uint8_t batteryLevel = 100);
+  BleMouse(StringType deviceName = "ESP32 Bluetooth Mouse", StringType deviceManufacturer = "Espressif", uint8_t batteryLevel = 100);
   void begin(void);
   void end(void);
   void click(uint8_t b = MOUSE_LEFT);
@@ -35,8 +44,8 @@ public:
   bool isConnected(void);
   void setBatteryLevel(uint8_t level);
   uint8_t batteryLevel;
-  std::string deviceManufacturer;
-  std::string deviceName;
+  StringType deviceManufacturer;
+  StringType deviceName;
 protected:
   virtual void onStarted(BLEServer *pServer) { };
 };
